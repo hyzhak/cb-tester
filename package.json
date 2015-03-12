@@ -1,6 +1,6 @@
 {
   "name": "cb-tester",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Common blockchain javascript testing kit",
   "main": "index.js",
   "repository": {
