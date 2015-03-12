@@ -1,5 +1,6 @@
 var assert = require('assert')
 var fixtures = require('./fixtures')
+var types = require('common-blockchain').types
 var typeForce = require('typeforce')
 var utils = require('./utils')
 
@@ -17,12 +18,7 @@ module.exports = function(options) {
           blockchain.addresses.summary(f, function(err, result) {
             assert.ifError(err)
 
-            typeForce({
-              address: "String",
-              balance: "Number",
-              totalReceived: "Number",
-              txCount: "Number"
-            }, result)
+            typeForce(types.addresses.summary, result)
 
             assert.strictEqual(result.address, f)
             assert(result.balance > 0, 'Invalid balance')
@@ -61,6 +57,7 @@ module.exports = function(options) {
         blockchain.addresses.summary(address, function(err, result) {
           assert.ifError(err)
 
+          typeForce(types.addresses.summary, result)
           assert.strictEqual(result.address, address)
           assert.strictEqual(result.balance, 0)
           assert.strictEqual(result.totalReceived, 0)
@@ -73,6 +70,8 @@ module.exports = function(options) {
       it('works for scriptHash addresses', function(done) {
         blockchain.addresses.summary(fixtures.scriptAddresses, function(err, results) {
           assert.ifError(err)
+
+          typeForce([types.addresses.summary], results)
           assert.strictEqual(results.length, fixtures.scriptAddresses.length)
 
           return done()
@@ -84,6 +83,8 @@ module.exports = function(options) {
 
         blockchain.addresses.summary(addresses, function(err, results) {
           assert.ifError(err)
+
+          typeForce([types.addresses.summary], results)
           assert.strictEqual(results.length, addresses.length)
 
           return done()
@@ -96,13 +97,7 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
           assert.ifError(err)
 
-          typeForce([{
-            txId: "String",
-            txHex: "String",
-            blockId: "String",
-            blockHeight: "Number"
-          }], results)
-
+          typeForce(types.addresses.transactions, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert(result.txHex.match(/^[0-9a-f]+$/i))
@@ -150,6 +145,7 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
           assert.ifError(err)
 
+          typeForce(types.addresses.transactions, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
               return (result.txId === f)
@@ -186,6 +182,7 @@ module.exports = function(options) {
               blockchain.addresses.transactions(address, function(err, results) {
                 assert.ifError(err)
 
+                typeForce(types.addresses.transactions, results)
                 assert(results.some(function(result) {
                   return result.txId === txId
                 }))
@@ -205,14 +202,7 @@ module.exports = function(options) {
         blockchain.addresses.unspents(address, function(err, results) {
           assert.ifError(err)
 
-          typeForce([{
-            txId: "String",
-            address: "String",
-            confirmations: "Number",
-            value: "Number",
-            vout: "Number"
-          }], results)
-
+          typeForce(types.addresses.unspents, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert.strictEqual(result.txId.length, 64)
@@ -261,6 +251,7 @@ module.exports = function(options) {
         blockchain.addresses.unspents(fixtures.addresses, function(err, results) {
           assert.ifError(err)
 
+          typeForce(types.addresses.unspents, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
               return (result.txId === f)
@@ -274,8 +265,10 @@ module.exports = function(options) {
       it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function(done) {
         var addresses = fixtures.tooManyAddresses
 
-        blockchain.addresses.unspents(addresses, function(err) {
+        blockchain.addresses.unspents(addresses, function(err, results) {
           assert.ifError(err)
+
+          typeForce(types.addresses.unspents, results)
 
           return done()
         })

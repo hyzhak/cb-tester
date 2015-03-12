@@ -1,8 +1,8 @@
 var assert = require('assert')
 var fixtures = require('./fixtures')
+var types = require('common-blockchain').types
 var typeForce = require('typeforce')
 var utils = require('./utils')
-var typeTemplates = require('./templates')
 
 module.exports = function(options) {
   describe('Transactions', function() {
@@ -27,7 +27,7 @@ module.exports = function(options) {
         it('returns a summary for ' + f.txId + ' correctly', function(done) {
           blockchain.transactions.summary(f.txId, function(err, result) {
             assert.ifError(err)
-            typeForce
+            typeForce(types.transactions.summary, result)
 
             verify(f, result)
 
@@ -62,6 +62,7 @@ module.exports = function(options) {
 
         blockchain.transactions.summary(txIds, function(err, results) {
           assert.ifError(err)
+          typeForce([types.transactions.summary], results)
 
           var resultsMap = {}
           results.map(function(result) { resultsMap[result.txId] = result })
@@ -80,6 +81,7 @@ module.exports = function(options) {
         it('returns the transaction for ' + f.txId + ' correctly', function(done) {
           blockchain.transactions.get(f.txId, function(err, result) {
             assert.ifError(err)
+            typeForce(types.transactions.get, result)
 
             assert.strictEqual(result.txId, f.txId)
             assert.strictEqual(result.blockId, f.blockId)
@@ -118,6 +120,7 @@ module.exports = function(options) {
         blockchain.transactions.get(txIds, function(err, results) {
           assert.ifError(err)
 
+          typeForce([types.transactions.get], results)
           assert.strictEqual(results.length, fixtures.transactions.length)
 
           fixtures.transactions.forEach(function(f) {
@@ -136,11 +139,7 @@ module.exports = function(options) {
         blockchain.transactions.latest(function(err, results) {
           assert.ifError(err)
 
-          typeForce([{
-            txId: "String",
-            txHex: "String"
-          }], results)
-
+          typeForce(types.transactions.latest, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert.strictEqual(result.txId.length, 64)
@@ -160,10 +159,11 @@ module.exports = function(options) {
           var txId = txs[0].getId()
           var txHex = txs[0].toHex()
 
-          blockchain.transactions.propagate(txHex, function(err, actualTxId) {
+          blockchain.transactions.propagate(txHex, function(err, result) {
             assert.ifError(err)
 
-            assert.strictEqual(actualTxId, txId)
+            typeForce(types.transactions.propagate, result)
+            assert.strictEqual(result, txId)
 
             done()
           })
@@ -188,6 +188,7 @@ module.exports = function(options) {
 
           blockchain.transactions.propagate(txHexs, function(err, results) {
             assert.ifError(err)
+            typeForce([types.transactions.propagate], results)
 
             results.forEach(function(actualTxId, i) {
               assert.strictEqual(actualTxId, txIds[i])
@@ -198,7 +199,7 @@ module.exports = function(options) {
         })
       })
 
-      it.skip('throws on malformed transaction', function(done) {
+      it.skip('throws on malformed transaction', function() {
 
       })
     })
