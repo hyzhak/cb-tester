@@ -1,6 +1,5 @@
-var assert = require('assert')
 var bitcoinjs = require('bitcoinjs-lib')
-var request = require('superagent')
+var httpify = require('httpify')
 
 function createNewAddress () {
   var privKey = bitcoinjs.ECKey.makeRandom()
@@ -10,13 +9,10 @@ function createNewAddress () {
 }
 
 function requestNewUnspents(amount, callback) {
-  assert(amount > 0, 'Minimum amount is 1')
-  assert(amount <= 3, 'Maximum amount is 3')
-  amount = Math.round(amount)
-
-  request
-  .get('https://testnet.helloblock.io/v1/faucet?type=' + amount)
-  .end(function(err, res) {
+  httpify({
+    method: 'GET',
+    url: 'https://testnet.helloblock.io/v1/faucet?type=' + amount
+  }, function(err, res) {
     if (err) return callback(err)
 
     var privKey = bitcoinjs.ECKey.fromWIF(res.body.data.privateKeyWIF)
