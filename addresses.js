@@ -168,29 +168,32 @@ module.exports = function(options) {
       })
 
       it('includes zero-confirmation transactions', function(done) {
-        utils.requestNewUnspents(1, function(err, txs, addresses) {
+        utils.requestUnconfirmedTransaction(function(err, txId, address) {
           assert.ifError(err)
 
-          var address = addresses[0]
-          var txHex = txs[0].toHex()
-          var txId = txs[0].getId()
+          var attempts = 0
+          function attempt(callback) {
+            attempts++
+            if (attempts > 3) return callback('Transaction never seen')
 
-          blockchain.transactions.propagate(txHex, function(err) {
-            assert.ifError(err)
+            blockchain.addresses.transactions(address, function(err, results) {
+              if (err) return callback(err)
 
-            setTimeout(function() {
-              blockchain.addresses.transactions(address, function(err, results) {
-                assert.ifError(err)
+              typeForce(types.addresses.transactions, results)
+              callback(null, results.some(function(result) { return result.txId === txId }))
+            })
+          }
 
-                typeForce(types.addresses.transactions, results)
-                assert(results.some(function(result) {
-                  return result.txId === txId
-                }))
+          var interval
+          function check(err, success) {
+            if (err || success) {
+              clearInterval(interval)
+              done(err)
+            }
+          }
 
-                return done()
-              })
-            }, 5000) // possibly adequate 'propagation' time
-          })
+          interval = setInterval(attempt.bind(null, check), 3000)
+          attempt(check)
         })
       })
     })

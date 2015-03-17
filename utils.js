@@ -8,6 +8,24 @@ function createNewAddress () {
   return privKey.pub.getAddress(testnet).toString()
 }
 
+function requestUnconfirmedTransaction(callback) {
+  var address = "mkU71dQZ5QAj2GspHfXW8ajgmx2hzYshUM"
+  httpify({
+    method: "POST",
+    url: "https://testnet.helloblock.io/v1/faucet/withdrawal",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      toAddress: address,
+      value: 1e4
+    })
+  }, function(err, res) {
+    if (err) return callback(err)
+    if (!res.body.data) return callback("Invalid JSend Response")
+
+    callback(null, res.body.data.txHash, address)
+  })
+}
+
 function requestNewUnspents(amount, callback) {
   httpify({
     method: 'GET',
@@ -25,17 +43,14 @@ function requestNewUnspents(amount, callback) {
       return tx.build()
     })
 
-    var addresses = res.body.data.unspents.map(function(utxo) {
-      return utxo.address
-    })
-
     if (txs.length !== amount) return callback(new Error('txs.length !== amount'))
 
-    callback(undefined, txs, addresses)
+    callback(undefined, txs)
   })
 }
 
 module.exports = {
   createNewAddress: createNewAddress,
+  requestUnconfirmedTransaction: requestUnconfirmedTransaction,
   requestNewUnspents: requestNewUnspents
 }
