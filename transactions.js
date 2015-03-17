@@ -14,13 +14,13 @@ module.exports = function(options) {
 
     describe('Summary', function() {
       function verify(f, result) {
-        assert.strictEqual(f.txId, result.txId)
-        assert.strictEqual(f.blockId, result.blockId)
-        assert.strictEqual(f.blockHeight, result.blockHeight)
-        assert.strictEqual(f.nInputs, result.nInputs)
-        assert.strictEqual(f.nOutputs, result.nOutputs)
-        assert.strictEqual(f.totalInputValue, result.totalInputValue)
-        assert.strictEqual(f.totalOutputValue, result.totalOutputValue)
+        assert.strictEqual(result.txId, f.txId)
+        assert.strictEqual(result.blockId, f.blockId)
+        assert.strictEqual(result.blockHeight, f.blockHeight)
+        assert.strictEqual(result.nInputs, f.nInputs)
+        assert.strictEqual(result.nOutputs, f.nOutputs)
+        assert.strictEqual(result.totalInputValue, f.totalInputValue)
+        assert.strictEqual(result.totalOutputValue, f.totalOutputValue)
       }
 
       fixtures.transactions.slice(0, 10).forEach(function(f) {
