@@ -37,7 +37,7 @@ function requestNewUnspents(amount, callback) {
     var txs = res.body.data.unspents.map(function(utxo) {
       var tx = new bitcoinjs.TransactionBuilder()
       tx.addInput(utxo.txHash, utxo.index)
-      tx.addOutput(utxo.address, utxo.value)
+      tx.addOutput('mkgqK39KnEkb1ockFBuGJy1pHQVN74oQDP', Math.min(6000, utxo.value))
       tx.sign(0, privKey)
 
       return tx.build()
