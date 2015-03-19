@@ -6,10 +6,10 @@
     "mvwvsPT2J3VPEaYmFdExFc4iBGRRK2Vdkd"
   ],
   "addressTransactions": [
-    "ffd316b0c4feb9d29c61c3734fcde0167600441e560931c8c7267a9de3d9e29a",
-    "f611cd3a1d676631b630600695074aab57b98ddc6982e93419438753f8f3fbda",
-    "41017e25bed3b740508fc10286ffd363935698bd541ac8c43d8fad52cde25220",
-    "3df7613ea58afc4c6c443cad6a8a1eaff4c5ae04e8124ec4e7204811c120101c"
+    {"txId": "3df7613ea58afc4c6c443cad6a8a1eaff4c5ae04e8124ec4e7204811c120101c", "blockHeight": 274301},
+    {"txId": "ffd316b0c4feb9d29c61c3734fcde0167600441e560931c8c7267a9de3d9e29a", "blockHeight": 274302},
+    {"txId": "f611cd3a1d676631b630600695074aab57b98ddc6982e93419438753f8f3fbda", "blockHeight": 274302},
+    {"txId": "41017e25bed3b740508fc10286ffd363935698bd541ac8c43d8fad52cde25220", "blockHeight": 274302}
   ],
   "tooManyAddresses": [
     "mvRiXbuKCoJMqVq3Vxh5xQCfQPfHEb6bda",
