@@ -168,6 +168,8 @@ module.exports = function(options) {
       })
 
       it('includes zero-confirmation transactions', function(done) {
+        this.timeout(15000); // 3 * (3s interval + 2s test)
+        
         utils.requestUnconfirmedTransaction(function(err, txId, address) {
           assert.ifError(err)
 
