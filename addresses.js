@@ -111,6 +111,23 @@ module.exports = function(options) {
         })
       })
 
+      it('returns results limited by blockHeight', function(done) {
+        blockchain.addresses.transactions(fixtures.addresses, 0, function (err, fullResults) {
+          assert.ifError(err)
+
+          typeForce(types.addresses.transactions, fullResults)
+
+          blockchain.addresses.transactions(fixtures.addresses, 274302, function (err, limitedResults) {
+            assert.ifError(err)
+
+            typeForce(types.addresses.transactions, limitedResults)
+            assert(fullResults.length > limitedResults.length)
+
+            return done()
+          })
+        })
+      })
+
       fixtures.invalid.addresses.forEach(function(f) {
         it('throws on ' + f, function(done) {
           blockchain.addresses.transactions(f, function(err) {
