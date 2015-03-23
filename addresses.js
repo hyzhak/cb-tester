@@ -165,7 +165,24 @@ module.exports = function(options) {
           typeForce(types.addresses.transactions, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
-              return (result.txId === f)
+              return (result.txId === f.txId)
+            }))
+          })
+
+          return done()
+        })
+      })
+
+      it('returns expected transactions limited by blockHeight', function(done) {
+        blockchain.addresses.transactions(fixtures.addresses, 274302, function(err, results) {
+          assert.ifError(err)
+
+          typeForce(types.addresses.transactions, results)
+          fixtures.addressTransactions.filter(function(f) {
+            return f.blockHeight >= 274302
+          }).forEach(function(f) {
+            assert(results.some(function(result) {
+              return (result.txId === f.txId)
             }))
           })
 
@@ -276,7 +293,7 @@ module.exports = function(options) {
           typeForce(types.addresses.unspents, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
-              return (result.txId === f)
+              return (result.txId === f.txId)
             }))
           })
 
