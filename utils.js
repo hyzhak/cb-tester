@@ -26,31 +26,27 @@ function requestUnconfirmedTransaction(callback) {
   })
 }
 
-function requestNewUnspents(amount, callback) {
+function requestNewUnspent(callback) {
   httpify({
     method: 'GET',
-    url: 'https://testnet.helloblock.io/v1/faucet?type=' + amount
+    url: 'https://testnet.helloblock.io/v1/faucet?type=1'
   }, function(err, res) {
     if (err) return callback(err)
 
-    var privKey = bitcoinjs.ECKey.fromWIF(res.body.data.privateKeyWIF)
-    var txs = res.body.data.unspents.map(function(utxo) {
-      var tx = new bitcoinjs.TransactionBuilder()
-      tx.addInput(utxo.txHash, utxo.index)
-      tx.addOutput('mkgqK39KnEkb1ockFBuGJy1pHQVN74oQDP', Math.min(6000, utxo.value))
-      tx.sign(0, privKey)
+    var key = bitcoinjs.ECKey.fromWIF(res.body.data.privateKeyWIF)
+    var tx = new bitcoinjs.TransactionBuilder()
+    var unspent = res.body.data.unspents[0]
 
-      return tx.build()
-    })
+    tx.addInput(unspent.txHash, unspent.index)
+    tx.addOutput('mkgqK39KnEkb1ockFBuGJy1pHQVN74oQDP', Math.min(6000, unspent.value))
+    tx.sign(0, key)
 
-    if (txs.length !== amount) return callback(new Error('txs.length !== amount'))
-
-    callback(undefined, txs)
+    callback(undefined, tx.build())
   })
 }
 
 module.exports = {
   createNewAddress: createNewAddress,
   requestUnconfirmedTransaction: requestUnconfirmedTransaction,
-  requestNewUnspents: requestNewUnspents
+  requestNewUnspent: requestNewUnspent
 }

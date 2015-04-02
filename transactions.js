@@ -152,47 +152,14 @@ module.exports = function(options) {
     })
 
     describe('Propagate', function() {
-      it('propagates a single Transaction', function(done) {
-        utils.requestNewUnspents(1, function(err, txs) {
+      it('propagates a Transaction', function(done) {
+        utils.requestNewUnspent(function(err, tx) {
           assert.ifError(err)
 
-          var txId = txs[0].getId()
-          var txHex = txs[0].toHex()
+          var txHex = tx.toHex()
 
-          blockchain.transactions.propagate(txHex, function(err, result) {
+          blockchain.transactions.propagate(txHex, function(err) {
             assert.ifError(err)
-
-            typeForce(types.transactions.propagate, result)
-            assert.strictEqual(result, txId)
-
-            done()
-          })
-        })
-      })
-
-      it('works for n of 0', function(done) {
-        blockchain.transactions.propagate([], function(err, results) {
-          assert.ifError(err)
-          assert.strictEqual(results.length, 0)
-
-          return done()
-        })
-      })
-
-      it('works for n of 3 transactions', function(done) {
-        utils.requestNewUnspents(3, function(err, txs) {
-          assert.ifError(err)
-
-          var txIds = txs.map(function(tx) { return tx.getId() })
-          var txHexs = txs.map(function(tx) { return tx.toHex() })
-
-          blockchain.transactions.propagate(txHexs, function(err, results) {
-            assert.ifError(err)
-            typeForce([types.transactions.propagate], results)
-
-            results.forEach(function(actualTxId, i) {
-              assert.strictEqual(actualTxId, txIds[i])
-            })
 
             done()
           })
