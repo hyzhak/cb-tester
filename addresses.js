@@ -173,14 +173,23 @@ module.exports = function(options) {
         })
       })
 
-      it('returns expected transactions limited by blockHeight', function(done) {
+      it('returns expected transactions when filtered by minimum blockHeight', function(done) {
+        var expectedTransactions = fixtures.addressTransactions.filter(function(f) {
+          return f.blockHeight >= 274302
+        })
+
         blockchain.addresses.transactions(fixtures.addresses, 274302, function(err, results) {
           assert.ifError(err)
 
           typeForce(types.addresses.transactions, results)
-          fixtures.addressTransactions.filter(function(f) {
-            return f.blockHeight >= 274302
-          }).forEach(function(f) {
+
+          // enforce all results have the minimum blockHeight
+          assert(results.every(function(result) {
+            return result.blockHeight >= 274302
+          }))
+
+          // enforce
+          expectedTransactions.forEach(function(f) {
             assert(results.some(function(result) {
               return (result.txId === f.txId)
             }))
@@ -203,7 +212,7 @@ module.exports = function(options) {
 
       it('includes zero-confirmation transactions', function(done) {
         this.timeout(15000); // 3 * (3s interval + 2s test)
-        
+
         utils.requestUnconfirmedTransaction(function(err, txId, address) {
           assert.ifError(err)
 
