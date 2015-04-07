@@ -1,7 +1,7 @@
 var assert = require('assert')
 var fixtures = require('./fixtures')
 var types = require('common-blockchain').types
-var typeForce = require('typeforce')
+var typeforce = require('typeforce')
 
 module.exports = function(options) {
   describe('Blocks', function() {
@@ -29,7 +29,7 @@ module.exports = function(options) {
           blockchain.blocks.summary(f.blockId, function(err, result) {
             assert.ifError(err)
 
-            typeForce(types.blocks.summary, result)
+            typeforce(types.blocks.summary, result)
             verify(f, result)
 
             done()
@@ -66,7 +66,7 @@ module.exports = function(options) {
           assert.strictEqual(results.length, blockIds.length)
 
           // TODO: better verification
-          typeForce([types.blocks.summary], results)
+          typeforce([types.blocks.summary], results)
 
           return done()
         })
@@ -79,7 +79,7 @@ module.exports = function(options) {
           blockchain.blocks.get(f.blockId, function(err, result) {
             assert.ifError(err)
 
-            typeForce(types.blocks.get, result)
+            typeforce(types.blocks.get, result)
             assert.strictEqual(result.blockId, f.blockId)
 
             // FIXME: is there a standard for ordering the transactions?
@@ -117,7 +117,7 @@ module.exports = function(options) {
         blockchain.blocks.latest(function(err, result) {
           assert.ifError(err)
 
-          typeForce(types.blocks.latest, result)
+          typeforce(types.blocks.latest, result)
 
           // TODO: more intricate sanity checking
           assert(result.blockId.match(/^[0-9a-f]+$/i))

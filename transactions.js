@@ -1,7 +1,7 @@
 var assert = require('assert')
 var fixtures = require('./fixtures')
 var types = require('common-blockchain').types
-var typeForce = require('typeforce')
+var typeforce = require('typeforce')
 var utils = require('./utils')
 
 module.exports = function(options) {
@@ -27,7 +27,7 @@ module.exports = function(options) {
         it('returns a summary for ' + f.txId + ' correctly', function(done) {
           blockchain.transactions.summary(f.txId, function(err, result) {
             assert.ifError(err)
-            typeForce(types.transactions.summary, result)
+            typeforce(types.transactions.summary, result)
 
             verify(f, result)
 
@@ -62,7 +62,7 @@ module.exports = function(options) {
 
         blockchain.transactions.summary(txIds, function(err, results) {
           assert.ifError(err)
-          typeForce([types.transactions.summary], results)
+          typeforce([types.transactions.summary], results)
 
           var resultsMap = {}
           results.map(function(result) { resultsMap[result.txId] = result })
@@ -81,7 +81,7 @@ module.exports = function(options) {
         it('returns the transaction for ' + f.txId + ' correctly', function(done) {
           blockchain.transactions.get(f.txId, function(err, result) {
             assert.ifError(err)
-            typeForce(types.transactions.get, result)
+            typeforce(types.transactions.get, result)
 
             assert.strictEqual(result.txId, f.txId)
             assert.strictEqual(result.blockId, f.blockId)
@@ -120,7 +120,7 @@ module.exports = function(options) {
         blockchain.transactions.get(txIds, function(err, results) {
           assert.ifError(err)
 
-          typeForce([types.transactions.get], results)
+          typeforce([types.transactions.get], results)
           assert.strictEqual(results.length, fixtures.transactions.length)
 
           fixtures.transactions.forEach(function(f) {
@@ -139,7 +139,7 @@ module.exports = function(options) {
         blockchain.transactions.latest(function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.transactions.latest, results)
+          typeforce(types.transactions.latest, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert.strictEqual(result.txId.length, 64)

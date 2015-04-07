@@ -1,7 +1,7 @@
 var assert = require('assert')
 var fixtures = require('./fixtures')
 var types = require('common-blockchain').types
-var typeForce = require('typeforce')
+var typeforce = require('typeforce')
 var utils = require('./utils')
 
 module.exports = function(options) {
@@ -18,7 +18,7 @@ module.exports = function(options) {
           blockchain.addresses.summary(f, function(err, result) {
             assert.ifError(err)
 
-            typeForce(types.addresses.summary, result)
+            typeforce(types.addresses.summary, result)
 
             assert.strictEqual(result.address, f)
             assert(result.balance > 0, 'Invalid balance')
@@ -57,7 +57,7 @@ module.exports = function(options) {
         blockchain.addresses.summary(address, function(err, result) {
           assert.ifError(err)
 
-          typeForce(types.addresses.summary, result)
+          typeforce(types.addresses.summary, result)
           assert.strictEqual(result.address, address)
           assert.strictEqual(result.balance, 0)
           assert.strictEqual(result.totalReceived, 0)
@@ -71,7 +71,7 @@ module.exports = function(options) {
         blockchain.addresses.summary(fixtures.scriptAddresses, function(err, results) {
           assert.ifError(err)
 
-          typeForce([types.addresses.summary], results)
+          typeforce([types.addresses.summary], results)
           assert.strictEqual(results.length, fixtures.scriptAddresses.length)
 
           return done()
@@ -84,7 +84,7 @@ module.exports = function(options) {
         blockchain.addresses.summary(addresses, function(err, results) {
           assert.ifError(err)
 
-          typeForce([types.addresses.summary], results)
+          typeforce([types.addresses.summary], results)
           assert.strictEqual(results.length, addresses.length)
 
           return done()
@@ -97,7 +97,7 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.transactions, results)
+          typeforce(types.addresses.transactions, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert(result.txHex.match(/^[0-9a-f]+$/i))
@@ -115,12 +115,12 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function (err, fullResults) {
           assert.ifError(err)
 
-          typeForce(types.addresses.transactions, fullResults)
+          typeforce(types.addresses.transactions, fullResults)
 
           blockchain.addresses.transactions(fixtures.addresses, 274302, function (err, limitedResults) {
             assert.ifError(err)
 
-            typeForce(types.addresses.transactions, limitedResults)
+            typeforce(types.addresses.transactions, limitedResults)
             assert(fullResults.length > limitedResults.length)
 
             return done()
@@ -162,7 +162,7 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.transactions, results)
+          typeforce(types.addresses.transactions, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
               return (result.txId === f.txId)
@@ -181,7 +181,7 @@ module.exports = function(options) {
         blockchain.addresses.transactions(fixtures.addresses, 274302, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.transactions, results)
+          typeforce(types.addresses.transactions, results)
 
           // enforce all results have the minimum blockHeight
           assert(results.every(function(result) {
@@ -229,7 +229,7 @@ module.exports = function(options) {
             blockchain.addresses.transactions(address, function(err, results) {
               if (err) return callback(err)
 
-              typeForce(types.addresses.transactions, results)
+              typeforce(types.addresses.transactions, results)
               callback(null, results.some(function(result) { return result.txId === txId }))
             })
           }
@@ -255,7 +255,7 @@ module.exports = function(options) {
         blockchain.addresses.unspents(address, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.unspents, results)
+          typeforce(types.addresses.unspents, results)
           results.forEach(function(result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert.strictEqual(result.txId.length, 64)
@@ -304,7 +304,7 @@ module.exports = function(options) {
         blockchain.addresses.unspents(fixtures.addresses, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.unspents, results)
+          typeforce(types.addresses.unspents, results)
           fixtures.addressTransactions.forEach(function(f) {
             assert(results.some(function(result) {
               return (result.txId === f.txId)
@@ -321,7 +321,7 @@ module.exports = function(options) {
         blockchain.addresses.unspents(addresses, function(err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.unspents, results)
+          typeforce(types.addresses.unspents, results)
 
           return done()
         })
