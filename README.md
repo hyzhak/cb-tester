@@ -25,3 +25,11 @@ describe('cb-tester', function() {
 
 See [common-blockchain](https://github.com/common-blockchain/common-blockchain) for more information as to what version of the specification this module is testing.
 The major version of this package should always match that of the specification repository.
+
+
+## Versions
+| cb-tester | common-blockchain | 
+| --------- | ----------------- |
+| master    | 0.3.0             | 
+| 0.2.22    | 0.2.1             | 
+| 0.2.21    | 0.2.1             |
