@@ -2,7 +2,7 @@
 
 [![Version](http://img.shields.io/npm/v/cb-tester.svg)](https://www.npmjs.org/package/cb-tester)
 
-A [common-blockchain](https://github.com/dcousens/common-blockchain) javascript mocha testing kit for easy drop-in testing for common blockchain modules.
+A [common-blockchain](https://github.com/common-blockchain/common-blockchain) javascript mocha testing kit for easy drop-in testing for common blockchain modules.
 
 
 ## Examples
@@ -23,5 +23,5 @@ describe('cb-tester', function() {
 
 ## Further reading
 
-See [common-blockchain](https://github.com/dcousens/common-blockchain) for more information as to what version of the specification this module is testing.
+See [common-blockchain](https://github.com/common-blockchain/common-blockchain) for more information as to what version of the specification this module is testing.
 The major version of this package should always match that of the specification repository.

@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcousens/cb-tester.git"
+    "url": "https://github.com/common-blockchain/cb-tester.git"
   },
   "keywords": [
     "bitcoin",
@@ -22,9 +22,9 @@
   "author": "Daniel Cousens",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dcousens/cb-tester/issues"
+    "url": "https://github.com/common-blockchain/cb-tester/issues"
   },
-  "homepage": "https://github.com/dcousens/cb-tester",
+  "homepage": "https://github.com/common-blockchain/cb-tester",
   "dependencies": {
     "bitcoinjs-lib": "^1.5.0",
     "common-blockchain": "^0.3.0",
