@@ -224,7 +224,7 @@ module.exports = function(options) {
 
             // stop trying after 3 attempts
             attempts++
-            if (attempts > 3) return callback('Transaction never seen')
+            if (attempts > 3) return callback(throw new Error('Transaction never seen'))
 
             blockchain.addresses.transactions(address, function(err, results) {
               if (err) return callback(err)

@@ -9,18 +9,18 @@ function createNewAddress () {
 }
 
 function requestUnconfirmedTransaction(callback) {
-  var address = "mkU71dQZ5QAj2GspHfXW8ajgmx2hzYshUM"
+  var address = 'mkU71dQZ5QAj2GspHfXW8ajgmx2hzYshUM'
   httpify({
-    method: "POST",
-    url: "https://testnet.helloblock.io/v1/faucet/withdrawal",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    url: 'https://testnet.helloblock.io/v1/faucet/withdrawal',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       toAddress: address,
       value: 1e4
     })
   }, function(err, res) {
     if (err) return callback(err)
-    if (!res.body.data) return callback("Invalid JSend Response")
+    if (!res.body.data) return callback(new Error('Invalid JSend Response'))
 
     callback(null, res.body.data.txHash, address)
   })
