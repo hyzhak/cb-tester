@@ -158,6 +158,21 @@ module.exports = function(options) {
         })
       })
 
+      it('returns unique results', function(done) {
+        blockchain.addresses.transactions(fixtures.addressesUniqueTransactions, 0, function(err, results) {
+          assert.ifError(err)
+
+          typeForce(types.addresses.transactions, results)
+          var txIds = []
+          results.forEach(function(f) {
+            assert(txIds.indexOf(f.txId) === -1)
+            txIds.push(f.txId)
+          })
+
+          return done()
+        })
+      })
+
       it('returns expected transactions', function(done) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
           assert.ifError(err)

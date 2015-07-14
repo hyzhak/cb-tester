@@ -5,6 +5,10 @@
     "mvJCbQvE6DgVAECMwDprASP3NMwuU53Eie",
     "mvwvsPT2J3VPEaYmFdExFc4iBGRRK2Vdkd"
   ],
+  "addressesUniqueTransactions": [
+    "2N3fN17kEoYNmSJB75tFfwtPuxkZ5q5LriH",
+    "2N33qWAyuDXHnmRuFZ3ko6ii7iz6EqE7GsB"
+  ],
   "addressTransactions": [
     {"txId": "3df7613ea58afc4c6c443cad6a8a1eaff4c5ae04e8124ec4e7204811c120101c", "blockHeight": 274301},
     {"txId": "ffd316b0c4feb9d29c61c3734fcde0167600441e560931c8c7267a9de3d9e29a", "blockHeight": 274302},
