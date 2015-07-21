@@ -155,7 +155,7 @@ module.exports = function (options) {
 
     describe('Propagate', function () {
       it('propagates a Transaction', function (done) {
-        utils.requestNewUnspent(function (err, tx) {
+        utils.requestNewUnspent(function (err, txId, address, tx) {
           assert.ifError(err)
 
           var txHex = tx.toHex()

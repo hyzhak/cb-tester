@@ -230,7 +230,7 @@ module.exports = function (options) {
       it('includes 0-confirmation transactions', function (done) {
         this.timeout(15000); // 3 * (3s interval + 2s test)
 
-        utils.requestUnconfirmedTransaction(function (err, txId, address) {
+        utils.requestNewUnspent(function(err, txId, address) {
           assert.ifError(err)
 
           var attempts = 0
