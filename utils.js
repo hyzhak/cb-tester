@@ -18,7 +18,7 @@ function requestUnconfirmedTransaction(callback) {
       toAddress: address,
       value: 1e4
     })
-  }, function(err, res) {
+  }, function (err, res) {
     if (err) return callback(err)
     if (!res.body.data) return callback(new Error('Invalid JSend Response'))
 
@@ -30,7 +30,7 @@ function requestNewUnspent(callback) {
   httpify({
     method: 'GET',
     url: 'https://testnet.helloblock.io/v1/faucet?type=1'
-  }, function(err, res) {
+  }, function (err, res) {
     if (err) return callback(err)
 
     var key = bitcoinjs.ECKey.fromWIF(res.body.data.privateKeyWIF)

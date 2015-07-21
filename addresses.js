@@ -1,21 +1,23 @@
+/* global beforeEach describe it */
+
 var assert = require('assert')
 var fixtures = require('./fixtures')
 var types = require('common-blockchain').types
 var typeforce = require('typeforce')
 var utils = require('./utils')
 
-module.exports = function(options) {
-  describe('Addresses', function() {
+module.exports = function (options) {
+  describe('Addresses', function () {
     var blockchain
 
-    beforeEach(function() {
+    beforeEach(function () {
       blockchain = options.blockchain
     })
 
-    describe('Summary', function() {
-      fixtures.addresses.forEach(function(f) {
-        it('returns summary for ' + f, function(done) {
-          blockchain.addresses.summary(f, function(err, result) {
+    describe('Summary', function () {
+      fixtures.addresses.forEach(function (f) {
+        it('returns summary for ' + f, function (done) {
+          blockchain.addresses.summary(f, function (err, result) {
             assert.ifError(err)
 
             typeforce(types.addresses.summary, result)
@@ -30,10 +32,10 @@ module.exports = function(options) {
         })
       })
 
-      fixtures.invalid.addresses.forEach(function(f) {
-        it('throws on ' + f, function(done) {
-          blockchain.addresses.summary(f, function(err) {
-            assert.throws(function() {
+      fixtures.invalid.addresses.forEach(function (f) {
+        it('throws on ' + f, function (done) {
+          blockchain.addresses.summary(f, function (err) {
+            assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid testnet address'))
 
@@ -42,8 +44,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of 0', function(done) {
-        blockchain.addresses.summary([], function(err, results) {
+      it('works for n of 0', function (done) {
+        blockchain.addresses.summary([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -54,7 +56,7 @@ module.exports = function(options) {
       it('works for an unused address', function (done) {
         var address = utils.createNewAddress()
 
-        blockchain.addresses.summary(address, function(err, result) {
+        blockchain.addresses.summary(address, function (err, result) {
           assert.ifError(err)
 
           typeforce(types.addresses.summary, result)
@@ -67,8 +69,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for scriptHash addresses', function(done) {
-        blockchain.addresses.summary(fixtures.scriptAddresses, function(err, results) {
+      it('works for scriptHash addresses', function (done) {
+        blockchain.addresses.summary(fixtures.scriptAddresses, function (err, results) {
           assert.ifError(err)
 
           typeforce([types.addresses.summary], results)
@@ -78,10 +80,10 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function(done) {
+      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function (done) {
         var addresses = fixtures.tooManyAddresses
 
-        blockchain.addresses.summary(addresses, function(err, results) {
+        blockchain.addresses.summary(addresses, function (err, results) {
           assert.ifError(err)
 
           typeforce([types.addresses.summary], results)
@@ -92,13 +94,13 @@ module.exports = function(options) {
       })
     })
 
-    describe('Transactions', function() {
-      it('returns sane results', function(done) {
-        blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
+    describe('Transactions', function () {
+      it('returns sane results', function (done) {
+        blockchain.addresses.transactions(fixtures.addresses, 0, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.transactions, results)
-          results.forEach(function(result) {
+          results.forEach(function (result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert(result.txHex.match(/^[0-9a-f]+$/i))
             assert(result.blockId.match(/^[0-9a-f]+$/i))
@@ -111,7 +113,7 @@ module.exports = function(options) {
         })
       })
 
-      it('returns results limited by blockHeight', function(done) {
+      it('returns results limited by blockHeight', function (done) {
         blockchain.addresses.transactions(fixtures.addresses, 0, function (err, fullResults) {
           assert.ifError(err)
 
@@ -128,10 +130,10 @@ module.exports = function(options) {
         })
       })
 
-      fixtures.invalid.addresses.forEach(function(f) {
-        it('throws on ' + f, function(done) {
-          blockchain.addresses.transactions(f, function(err) {
-            assert.throws(function() {
+      fixtures.invalid.addresses.forEach(function (f) {
+        it('throws on ' + f, function (done) {
+          blockchain.addresses.transactions(f, function (err) {
+            assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid testnet address'))
 
@@ -140,8 +142,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of 0', function(done) {
-        blockchain.addresses.transactions([], function(err, results) {
+      it('works for n of 0', function (done) {
+        blockchain.addresses.transactions([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -150,7 +152,7 @@ module.exports = function(options) {
       })
 
       it('works for an unused address', function (done) {
-        blockchain.addresses.transactions(utils.createNewAddress(), function(err, results) {
+        blockchain.addresses.transactions(utils.createNewAddress(), function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -158,13 +160,13 @@ module.exports = function(options) {
         })
       })
 
-      it('returns unique results', function(done) {
-        blockchain.addresses.transactions(fixtures.addressesUniqueTransactions, 0, function(err, results) {
+      it('returns unique results', function (done) {
+        blockchain.addresses.transactions(fixtures.addressesUniqueTransactions, 0, function (err, results) {
           assert.ifError(err)
 
-          typeForce(types.addresses.transactions, results)
+          typeforce(types.addresses.transactions, results)
           var txIds = []
-          results.forEach(function(f) {
+          results.forEach(function (f) {
             assert(txIds.indexOf(f.txId) === -1)
             txIds.push(f.txId)
           })
@@ -173,13 +175,13 @@ module.exports = function(options) {
         })
       })
 
-      it('returns expected transactions', function(done) {
-        blockchain.addresses.transactions(fixtures.addresses, 0, function(err, results) {
+      it('returns expected transactions', function (done) {
+        blockchain.addresses.transactions(fixtures.addresses, 0, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.transactions, results)
-          fixtures.addressTransactions.forEach(function(f) {
-            assert(results.some(function(result) {
+          fixtures.addressTransactions.forEach(function (f) {
+            assert(results.some(function (result) {
               return (result.txId === f.txId)
             }))
           })
@@ -188,24 +190,24 @@ module.exports = function(options) {
         })
       })
 
-      it('returns expected transactions when filtered by minimum blockHeight', function(done) {
-        var expectedTransactions = fixtures.addressTransactions.filter(function(f) {
+      it('returns expected transactions when filtered by minimum blockHeight', function (done) {
+        var expectedTransactions = fixtures.addressTransactions.filter(function (f) {
           return f.blockHeight >= 274302
         })
 
-        blockchain.addresses.transactions(fixtures.addresses, 274302, function(err, results) {
+        blockchain.addresses.transactions(fixtures.addresses, 274302, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.transactions, results)
 
           // enforce all results have the minimum blockHeight
-          assert(results.every(function(result) {
+          assert(results.every(function (result) {
             return result.blockHeight >= 274302
           }))
 
           // enforce
-          expectedTransactions.forEach(function(f) {
-            assert(results.some(function(result) {
+          expectedTransactions.forEach(function (f) {
+            assert(results.some(function (result) {
               return (result.txId === f.txId)
             }))
           })
@@ -214,8 +216,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function(done) {
-        blockchain.addresses.transactions(fixtures.tooManyAddresses, 0, function(err, results) {
+      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function (done) {
+        blockchain.addresses.transactions(fixtures.tooManyAddresses, 0, function (err, results) {
           assert.ifError(err)
 
           // TODO: verify...
@@ -225,32 +227,32 @@ module.exports = function(options) {
         })
       })
 
-      it('includes 0-confirmation transactions', function(done) {
+      it('includes 0-confirmation transactions', function (done) {
         this.timeout(15000); // 3 * (3s interval + 2s test)
 
-        utils.requestUnconfirmedTransaction(function(err, txId, address) {
+        utils.requestUnconfirmedTransaction(function (err, txId, address) {
           assert.ifError(err)
 
           var attempts = 0
 
-          function attempt(callback) {
+          function attempt (callback) {
             // check incase we already had a success/failure
             if (!interval) return
 
             // stop trying after 3 attempts
             attempts++
-            if (attempts > 3) return callback(throw new Error('Transaction never seen'))
+            if (attempts > 3) return callback(new Error('Transaction never seen'))
 
-            blockchain.addresses.transactions(address, function(err, results) {
+            blockchain.addresses.transactions(address, function (err, results) {
               if (err) return callback(err)
 
               typeforce(types.addresses.transactions, results)
-              callback(null, results.some(function(result) { return result.txId === txId }))
+              callback(null, results.some(function (result) { return result.txId === txId }))
             })
           }
 
           var interval
-          function check(err, success) {
+          function check (err, success) {
             if (err || success) {
               clearInterval(interval)
               done(err)
@@ -263,15 +265,15 @@ module.exports = function(options) {
       })
     })
 
-    describe('Unspents', function() {
-      it('returns sane results', function(done) {
+    describe('Unspents', function () {
+      it('returns sane results', function (done) {
         var address = fixtures.addresses[0]
 
-        blockchain.addresses.unspents(address, function(err, results) {
+        blockchain.addresses.unspents(address, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.unspents, results)
-          results.forEach(function(result) {
+          results.forEach(function (result) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert.strictEqual(result.txId.length, 64)
 
@@ -285,10 +287,10 @@ module.exports = function(options) {
         })
       })
 
-      fixtures.invalid.addresses.forEach(function(f) {
-        it('throws on ' + f, function(done) {
-          blockchain.addresses.unspents(f, function(err) {
-            assert.throws(function() {
+      fixtures.invalid.addresses.forEach(function (f) {
+        it('throws on ' + f, function (done) {
+          blockchain.addresses.unspents(f, function (err) {
+            assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid testnet address'))
 
@@ -297,8 +299,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of 0', function(done) {
-        blockchain.addresses.unspents([], function(err, results) {
+      it('works for n of 0', function (done) {
+        blockchain.addresses.unspents([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -307,7 +309,7 @@ module.exports = function(options) {
       })
 
       it('works for an unused address', function (done) {
-        blockchain.addresses.unspents(utils.createNewAddress(), function(err, results) {
+        blockchain.addresses.unspents(utils.createNewAddress(), function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -315,13 +317,13 @@ module.exports = function(options) {
         })
       })
 
-      it('returns expected transactions', function(done) {
-        blockchain.addresses.unspents(fixtures.addresses, function(err, results) {
+      it('returns expected transactions', function (done) {
+        blockchain.addresses.unspents(fixtures.addresses, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.unspents, results)
-          fixtures.addressTransactions.forEach(function(f) {
-            assert(results.some(function(result) {
+          fixtures.addressTransactions.forEach(function (f) {
+            assert(results.some(function (result) {
               return (result.txId === f.txId)
             }))
           })
@@ -330,10 +332,10 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function(done) {
+      it('works for n of ' + fixtures.tooManyAddresses.length + ' addresses', function (done) {
         var addresses = fixtures.tooManyAddresses
 
-        blockchain.addresses.unspents(addresses, function(err, results) {
+        blockchain.addresses.unspents(addresses, function (err, results) {
           assert.ifError(err)
 
           typeforce(types.addresses.unspents, results)

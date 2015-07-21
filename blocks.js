@@ -1,18 +1,20 @@
+/* global beforeEach describe it */
+
 var assert = require('assert')
 var fixtures = require('./fixtures')
 var types = require('common-blockchain').types
 var typeforce = require('typeforce')
 
-module.exports = function(options) {
-  describe('Blocks', function() {
+module.exports = function (options) {
+  describe('Blocks', function () {
     var blockchain
 
-    beforeEach(function() {
+    beforeEach(function () {
       blockchain = options.blockchain
     })
 
-    describe('Summary', function() {
-      function verify(f, result) {
+    describe('Summary', function () {
+      function verify (f, result) {
         assert.strictEqual(f.blockId, result.blockId)
         assert.strictEqual(f.blockHeight, result.blockHeight)
         assert.strictEqual(f.prevBlockId, result.prevBlockId)
@@ -24,9 +26,9 @@ module.exports = function(options) {
         assert.strictEqual(f.txCount, result.txCount)
       }
 
-      fixtures.blocks.forEach(function(f) {
-        it('returns headers for ' + f.blockId, function(done) {
-          blockchain.blocks.summary(f.blockId, function(err, result) {
+      fixtures.blocks.forEach(function (f) {
+        it('returns headers for ' + f.blockId, function (done) {
+          blockchain.blocks.summary(f.blockId, function (err, result) {
             assert.ifError(err)
 
             typeforce(types.blocks.summary, result)
@@ -37,10 +39,10 @@ module.exports = function(options) {
         })
       })
 
-      fixtures.invalid.blocks.forEach(function(f) {
-        it('throws on ' + f, function(done) {
-          blockchain.blocks.summary(f, function(err) {
-            assert.throws(function() {
+      fixtures.invalid.blocks.forEach(function (f) {
+        it('throws on ' + f, function (done) {
+          blockchain.blocks.summary(f, function (err) {
+            assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid blockId'))
 
@@ -49,8 +51,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of 0', function(done) {
-        blockchain.blocks.summary([], function(err, results) {
+      it('works for n of 0', function (done) {
+        blockchain.blocks.summary([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -58,10 +60,10 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of ' + fixtures.blocks.length, function(done) {
-        var blockIds = fixtures.blocks.map(function(block) { return block.blockId })
+      it('works for n of ' + fixtures.blocks.length, function (done) {
+        var blockIds = fixtures.blocks.map(function (block) { return block.blockId })
 
-        blockchain.blocks.summary(blockIds, function(err, results) {
+        blockchain.blocks.summary(blockIds, function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, blockIds.length)
 
@@ -73,10 +75,10 @@ module.exports = function(options) {
       })
     })
 
-    describe('Get', function() {
-      fixtures.blocks.forEach(function(f) {
-        it('returns hex for ' + f.blockId, function(done) {
-          blockchain.blocks.get(f.blockId, function(err, result) {
+    describe('Get', function () {
+      fixtures.blocks.forEach(function (f) {
+        it('returns hex for ' + f.blockId, function (done) {
+          blockchain.blocks.get(f.blockId, function (err, result) {
             assert.ifError(err)
 
             typeforce(types.blocks.get, result)
@@ -90,10 +92,10 @@ module.exports = function(options) {
         })
       })
 
-      fixtures.invalid.blocks.forEach(function(f) {
-        it('throws on ' + f, function(done) {
-          blockchain.blocks.summary(f, function(err) {
-            assert.throws(function() {
+      fixtures.invalid.blocks.forEach(function (f) {
+        it('throws on ' + f, function (done) {
+          blockchain.blocks.summary(f, function (err) {
+            assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid blockId'))
 
@@ -102,8 +104,8 @@ module.exports = function(options) {
         })
       })
 
-      it('works for n of 0', function(done) {
-        blockchain.blocks.get([], function(err, results) {
+      it('works for n of 0', function (done) {
+        blockchain.blocks.get([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
@@ -112,9 +114,9 @@ module.exports = function(options) {
       })
     })
 
-    describe('Latest', function() {
-      it('returns sane results', function(done) {
-        blockchain.blocks.latest(function(err, result) {
+    describe('Latest', function () {
+      it('returns sane results', function (done) {
+        blockchain.blocks.latest(function (err, result) {
           assert.ifError(err)
 
           typeforce(types.blocks.latest, result)
@@ -134,13 +136,13 @@ module.exports = function(options) {
       })
     })
 
-    describe('Propagate', function() {
-      it.skip('throws on malformed block', function(done) {
+    describe('Propagate', function () {
+      it.skip('throws on malformed block', function (done) {
         done()
       })
 
-      it.skip('works for n of 0', function(done) {
-        blockchain.blocks.propagate([], function(err, results) {
+      it.skip('works for n of 0', function (done) {
+        blockchain.blocks.propagate([], function (err, results) {
           assert.ifError(err)
           assert.strictEqual(results.length, 0)
 
