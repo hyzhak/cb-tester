@@ -30,6 +30,6 @@ The major version of this package should always match that of the specification 
 ## Versions
 | cb-tester | common-blockchain | 
 | --------- | ----------------- |
-| master    | 0.3.0             | 
+| master    | 0.2.x             | 
 | 0.2.22    | 0.2.1             | 
 | 0.2.21    | 0.2.1             |
