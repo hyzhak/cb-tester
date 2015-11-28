@@ -94,7 +94,7 @@ module.exports = function (options) {
 
       fixtures.invalid.blocks.forEach(function (f) {
         it('throws on ' + f, function (done) {
-          blockchain.blocks.summary(f, function (err) {
+          blockchain.blocks.get(f, function (err) {
             assert.throws(function () {
               if (err) throw err
             }, new RegExp(f + ' is not a valid blockId'))
