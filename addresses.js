@@ -37,7 +37,7 @@ module.exports = function (options) {
           blockchain.addresses.summary(f, function (err) {
             assert.throws(function () {
               if (err) throw err
-            }, new RegExp(f + ' is not a valid testnet address'))
+            }, new RegExp(f + ' is not a valid address'))
 
             return done()
           })
@@ -135,7 +135,7 @@ module.exports = function (options) {
           blockchain.addresses.transactions(f, function (err) {
             assert.throws(function () {
               if (err) throw err
-            }, new RegExp(f + ' is not a valid testnet address'))
+            }, new RegExp(f + ' is not a valid address'))
 
             return done()
           })
@@ -292,7 +292,7 @@ module.exports = function (options) {
           blockchain.addresses.unspents(f, function (err) {
             assert.throws(function () {
               if (err) throw err
-            }, new RegExp(f + ' is not a valid testnet address'))
+            }, new RegExp(f + ' is not a valid address'))
 
             return done()
           })
