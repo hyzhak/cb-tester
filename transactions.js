@@ -161,6 +161,18 @@ module.exports = function (options) {
     //B: insufficient priority
     //
     //waiting for feedback
+    //
+    //
+    //got another error:
+    //Missing inputs
+    //
+    //it can be related to this part
+    //https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp#L936
+    //
+    //if (!view.HaveCoins(txin.prevout.hash)) {
+    //  if (pfMissingInputs)
+    //    *pfMissingInputs = true;
+    //
 
     describe.skip('Propagate', function () {
       it('propagates a Transaction', function (done) {
