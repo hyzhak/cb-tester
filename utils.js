@@ -22,6 +22,7 @@ function requestNewUnspent (callback) {
     body: JSON.stringify({ address: address, amount: value })
   }, function (err, res) {
     if (err) return callback(err)
+    if (res.body.code >= 500) return callback(res.body)
 
     var txb = new bitcoinjs.TransactionBuilder()
     var unspent = res.body
