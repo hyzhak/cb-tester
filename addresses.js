@@ -104,6 +104,8 @@ module.exports = function (options) {
             assert(result.txId.match(/^[0-9a-f]+$/i))
             assert(result.txHex.match(/^[0-9a-f]+$/i))
             assert(result.blockId.match(/^[0-9a-f]+$/i))
+            assert(result.__blockTimestamp)
+            assert(result.__confirmations)
             assert.strictEqual(result.txId.length, 64)
             assert.strictEqual(result.blockId.length, 64)
             assert(result.blockHeight > 0)
