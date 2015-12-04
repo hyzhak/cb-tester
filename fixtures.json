@@ -5,6 +5,12 @@
     "mvJCbQvE6DgVAECMwDprASP3NMwuU53Eie",
     "mvwvsPT2J3VPEaYmFdExFc4iBGRRK2Vdkd"
   ],
+  "addressesBalance": {
+    "mpNDUWcDcZw1Teo3LFHvr8usNdwDLKdTaY": 0.3902,
+    "mv3fK2ME7g9K4HswGXs6mG92e7gRgsTsqM": 4.2002,
+    "mvJCbQvE6DgVAECMwDprASP3NMwuU53Eie": 0.0002,
+    "mvwvsPT2J3VPEaYmFdExFc4iBGRRK2Vdkd": 0.0002
+  },
   "addressesUniqueTransactions": [
     "2N3fN17kEoYNmSJB75tFfwtPuxkZ5q5LriH",
     "2N33qWAyuDXHnmRuFZ3ko6ii7iz6EqE7GsB"

@@ -23,6 +23,7 @@ module.exports = function (options) {
             typeforce(types.addresses.summary, result)
 
             assert.strictEqual(result.address, f)
+            assert.equal(result.balance, fixtures.addressesBalance[f])
             assert(result.balance > 0, 'Invalid balance')
             assert(result.totalReceived > 0, 'Invalid totalReceived')
             assert(result.txCount > 0, 'Invalid txCount')
